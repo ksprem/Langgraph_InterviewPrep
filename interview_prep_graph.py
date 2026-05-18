@@ -46,6 +46,8 @@
 # =============================================================================
 
 import sys
+import os
+import subprocess
 import operator
 import json
 from typing import Annotated
@@ -281,23 +283,43 @@ def run_interview_check(user_input: str):
     return result
 
 
+def start_streamlit_app():
+    port = os.getenv("PORT", "8501")
+    subprocess.run(
+        [
+            "streamlit",
+            "run",
+            "streamlit_app.py",
+            "--server.port",
+            port,
+            "--server.address",
+            "0.0.0.0",
+        ],
+        check=True,
+    )
+
+
 if __name__ == "__main__":
-    print("\n" + "=" * 55)
-    print("  INTERVIEW PREP SUGGESTER")
-    print("=" * 55)
-    print("\n  Tell me about the interview you're preparing for and I'll suggest a")
-    print("  personalized prep plan just for you.")
-    print("  Type 'quit' to exit.\n")
+    if sys.stdin.isatty():
+        print("\n" + "=" * 55)
+        print("  INTERVIEW PREP SUGGESTER")
+        print("=" * 55)
+        print("\n  Tell me about the interview you're preparing for and I'll suggest a")
+        print("  personalized prep plan just for you.")
+        print("  Type 'quit' to exit.\n")
 
-    while True:
-        user_input = input("  What interview are you preparing for? > ").strip()
+        while True:
+            user_input = input("  What interview are you preparing for? > ").strip()
 
-        if user_input.lower() in ("quit", "exit", "q"):
-            print("\n  Take care of yourself. Goodbye!\n")
-            break
+            if user_input.lower() in ("quit", "exit", "q"):
+                print("\n  Take care of yourself. Goodbye!\n")
+                break
 
-        if not user_input:
-            continue
+            if not user_input:
+                continue
 
-        run_interview_check(user_input)
-        print("\n")
+            run_interview_check(user_input)
+            print("\n")
+    else:
+        print("Starting Streamlit app because no interactive terminal is available.")
+        start_streamlit_app()
