@@ -153,6 +153,32 @@ This is a learning project and not a substitute for professional interview coach
 
 ---
 
+## Streamlit UI
+
+A Streamlit interface is available in `streamlit_app.py`.
+
+Run locally with:
+
+```powershell
+pip install -r requirements.txt
+streamlit run streamlit_app.py
+```
+
+---
+
+## Deploying to Railway
+
+1. Create a new Railway project and connect this repository.
+2. Set the environment variable `OPENAI_API_KEY` in Railway project settings.
+3. Railway will use `requirements.txt` and `Procfile` to start the app.
+4. The app runs on the `web` port using:
+
+```text
+web: streamlit run streamlit_app.py --server.port $PORT --server.address 0.0.0.0
+```
+
+---
+
 ## Key Takeaways
 
 1. Graph state carries the data that travels through the app.
